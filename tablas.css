@@ -1,0 +1,114 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-image: url("img.jpg");
+    background-position: 15%;
+    background-size: cover;
+}
+
+#container {
+    /*width: 70%;*/
+    width: 1100px;
+    margin: 0px auto;
+    border-radius: 5px;
+}
+
+header { 
+    text-align: center;
+    line-height: 100px;
+    border-radius: 20px;
+}
+
+nav {
+    background: hsl(203, 22%, 64%);
+    height: 80px;
+    border-radius: 15px;
+}
+.boton{
+    text-shadow: 0px 1px rgba(0, 0, 0, 0.2);
+    text-align:center;
+    text-decoration: none;
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    display:inline-block;
+    color: #FFF;
+    background: #7F8C8D;
+    padding: 7px 20px;
+    white-space: nowrap;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 100px;
+    margin: 10px 5px;
+    -webkit-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+.azul{
+    background: hsl(203, 22%, 64%);
+    box-shadow: 0px 5px 0px 0px hsl(203, 22%, 64%);
+}
+
+.azul:hover{
+    background: #39a0e5;
+}
+
+.azul:active{
+    box-shadow: 0px 2px 0px 0px #2980B9;
+}
+nav ul li  {
+    float: left;
+    list-style: none;
+    margin: 10px; 
+    line-height: 30px;
+}
+
+.clearfix{
+    clear:both;
+}
+
+#content {
+    float: left;
+    width: 80%;
+    min-height: 500px;
+}
+
+#content ul {
+    background: #3399ff;
+    padding: 20px;
+}
+#content ul li {
+    background: #cce5ff;
+    color: #02020c;
+    margin: 5px;
+}
+#content ul li input{
+    background: transparent;
+    border: none;
+    outline: none;
+    
+}
+
+
+#content table thead th, td {
+    background: hsl(203, 19%, 87%);
+    float: center;
+    width: calc(80%-80px);
+    border: 1px solid black;
+    padding-left: 42px;
+    padding-right: 42px;
+    border-radius: 5px;
+}
+
+aside{
+    float:left;
+    width: calc(20% - 20px);
+    min-height: 500px;
+    background: #bfd5e3;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 20px;
+}
