@@ -3,6 +3,8 @@ import bcrypt
 import mysql.connector
 from mysql.connector import Error
 # base
+
+
 def hash_password(password: str) -> str:
     """Hashea la contraseña usando bcrypt."""
     salt = bcrypt.gensalt()
@@ -31,13 +33,12 @@ def store_user(usre: str, passwords: str, ):
         query = "INSERT INTO usre (usre, passwords) VALUES (%s, %s)"
         cursor.execute(query, (usre, passwords))
         connection.commit()
-        print("Usuario almacenado correctamente.")
-    except Error as e:
-        print("Error al almacenar usuario:", e)
+        return
     finally:
         if connection.is_connected():
             cursor.close()
             connection.close()
+
 
 
 def retrieve_user(usre: str) -> str:
@@ -50,12 +51,6 @@ def retrieve_user(usre: str) -> str:
         result = cursor.fetchone()
         if result:
             return result[0]
-        else:
-            print("Usuario no encontrado.")
-            return None
-    except Error as e:
-        print("Error al recuperar usuario:", e)
-        return None
     finally:
         if connection.is_connected():
             cursor.close()
@@ -72,9 +67,6 @@ def insert( model, part, serial, car, year, color, version):
             query = "INSERT INTO part (model, part, serial, car, year, color, version) VALUES (%s, %s, %s, %s, %s, %s, %s  )"
             cursor.execute(query, (model, part, serial, car, year, color, version))
             connection.commit()
-            print("Correcto al almacenar")
-        except Error as e:
-            print("Error al almacenar:", e)
         finally:
             if connection.is_connected():
                 cursor.close()
@@ -88,21 +80,45 @@ def search(model):
         query = f"SELECT * FROM data_ursers.part WHERE model IN ('{model}')"
         cursor.execute(query)
         result = cursor.fetchall()
-        for row in result:
-            if row:
-                print(row)
-            else:
-                print("Modelo no encontrado.")
-                cursor.close()
-                connection.close()   
+        return result
+
+def general_search(general_search):
+    connection = mysql.connector.connect(**config)
+    cursor = connection.cursor(dictionary=True)
+    conditions = []
+    values = []
+    for key, value in general_search.items():
+            if key in ["Model", "Part", "Serial", "Car", "Year", "Color", "Version"]:
+                conditions.append(f"{key} = %s")
+                values.append(value)
+    if not conditions:
+            return []  
+
+    sql = f"SELECT * FROM `data_ursers`.`part` WHERE {' AND '.join(conditions)}"
+    cursor.execute(sql, values)
+    results = cursor.fetchall()
+    return results
+
 
 def eliminate(eliminates):
-
+    try:
         connection = mysql.connector.connect(**config)
         cursor = connection.cursor()
-        query = f"DELETE FROM data_ursers.part WHERE serial IN ({eliminates})"
-        cursor.execute(query,)
+        
+        if isinstance(eliminates, str):
+            eliminates_list = [eliminates]
+        elif isinstance(eliminates, (list, tuple)):
+            eliminates_list = list(eliminates)
+        else:
+            return
+
+        placeholders = ', '.join(['%s'] * len(eliminates_list))
+        query = f"DELETE FROM data_ursers.part WHERE serial IN ({placeholders})"
+
+        cursor.execute(query, tuple(eliminates_list))
         connection.commit()
-        connection.is_connected
-        cursor.close()
-        connection.close()  
+
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()

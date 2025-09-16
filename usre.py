@@ -1,61 +1,41 @@
 from base import retrieve_user, check_password
-from base import insert, search
-from base import eliminate
-
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from mysql.connector import Error
 # user sign in
-def main():
+app = Flask(__name__)
+CORS(app)
 
-    usre = "david96"
-    password = "david96"
+@app.route('/User', methods=['POST'])
+
+def main():
+    try:
+        data = request.get_json()
+        user = data.get("user")
+        password = data.get("password")
+
+        if user is None or password is None:
+            return jsonify({'error': 'Debes proporcionar "user" y "password" en el cuerpo de la solicitud JSON.'}), 400
+        
+        if not isinstance(user, (str)) or not isinstance(password, (str)):
+            return jsonify({'error': '"user" y "password" deben ser cadenas de texto.'}), 400 
+        
+        stored_hash = retrieve_user(user)
+        if stored_hash is None:
+            return jsonify({'error': f'El usuario "{user}" no existe.'}), 404
+        
+        if check_password(stored_hash, password):
+            return jsonify({'message': f'Contraseña del usuario "{user}" es correcta.'}), 200
+        else:
+            return jsonify({'error': 'Credenciales inválidas.'}), 401
+        
+    except Error as e:
+        return jsonify({'error': f'El usuario "{user}" o la contraseña ya existe.'}), 404
     
-    stored_hash = retrieve_user(usre)
-    if stored_hash:
-        is_correct = check_password(stored_hash, password)
-        print("Contraseña correcta:", is_correct)
-    else:
-        print("No se pudo verificar la contraseña.")
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+        
+
 if __name__ == "__main__":
-    main()
-
-# insert part
-a = input("Model: ")
-b = input("Part: ")
-c = input("Serial: ")
-d = input("Car: ")
-e = input("Year: ")
-f = input("Color: ")
-g = input("Version: ")
-
-def main():
-
-    model = a
-    part = b
-    serial = c
-    car = d
-    year = e
-    color = f
-    version = g
-
-    insert(model, part, serial, car, year, color, version)
-if __name__ == "__main__":
-    main()
-
-# search for model
-a = input("inserte un modelo: ")
-
-def main():
-    model = a 
-
-    search(model)
-if __name__ == "__main__":
-    main()
-
-a = input("Numero de serial que deseas eliminar: ")
-
-def main():
-    eliminates = a
-
-    eliminate(eliminates)
-if __name__ == "__main__":
-    main()
+    app.run(debug=True)
 
