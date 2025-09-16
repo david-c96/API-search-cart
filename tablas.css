@@ -112,3 +112,12 @@ aside{
     padding-right: 10px;
     border-radius: 20px;
 }
+
+/* Estilo para pantallas pequeñas (como móviles) */
+@media (max-width: 768px) {
+  body {
+    background-color: #f0f8ff;
+    font-size: 16px;
+    padding: 10px;
+  }
+}
