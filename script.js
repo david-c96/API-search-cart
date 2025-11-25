@@ -1,59 +1,128 @@
-document.addEventListener('DOMContentLoaded', function() {
-    const loginForm = document.querySelector('form');
-    const errorMessageDiv = document.getElementById('error-mensaje');
-    const baseURL = 'http://127.0.0.1:5000'; // Define la URL base
+document.addEventListener('DOMContentLoaded', () => {
 
-    loginForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Evita el envío del formulario por defecto
 
+
+// inicio de sesión -------------------------------------
+
+
+
+    const loginForm = document.querySelector('#login-form');
+    const loginMessageDiv = document.getElementById('login-error');
+
+    if (!loginForm) {
+        console.error('No se encontró el formulario de login');
+        return;
+    }
+
+    loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        // Obtener valores
         const user = document.getElementById('user').value.trim();
         const password = document.getElementById('password').value.trim();
 
-        errorMessageDiv.textContent = ''; // Limpia cualquier mensaje de error previo
+        // Limpia mensaje de error
+        loginMessageDiv.textContent = '';
 
-        if (user === '') {
-            mostrarError('Por favor, introduce tu nombre de usuario.');
+        // Validación básica
+        if (!user || !password) {
+            mostrarError('Por favor completa todos los campos.');
             return;
         }
 
-        if (password === '') {
-            mostrarError('Por favor, introduce tu contraseña.');
-            return;
-        }
-
-        // Aquí podrías agregar más validaciones del lado del cliente si lo deseas
-
-        // Envía los datos al servidor usando Fetch API
-        fetch(`${baseURL}/User`, { // Usa la URL base combinada con el endpoint
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ // Convierte el objeto a JSON string
-                  user: user,
-                  password: password,
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user: user,
+                    password: password,
                 }),
-        })
-        .then(response => {
+            });
+
+            const data = await response.json();
+
             if (!response.ok) {
-                return response.json().then(err => {
-                    throw new Error(err.error || 'Error al iniciar sesión.');
-                });
+                // Si el servidor devuelve error, se muestra el mensaje
+                throw new Error(data.error || 'Error al iniciar sesión.');
             }
-            return response.json();
-        })
-        .then(data => {
-            // Redirige al usuario a la página principal o realiza alguna otra acción
+
             console.log('Inicio de sesión exitoso:', data);
-            window.location.href = 'tablas.html'; // Reemplaza '/dashboard' con la URL deseada
-        })
-        .catch(error => {
+            window.location.href = 'tablas.html';
+
+        } catch (error) {
             console.error('Error al iniciar sesión:', error);
             mostrarError(error.message);
-        });
+        }
+    });
+
+        function mostrarError(mensaje) {
+        loginMessageDiv.textContent = mensaje;
+        loginMessageDiv.style.color = 'red';
+        }
+
+
+
+//  registro de usuario -------------------------------------
+
+
+    const registerForm = document.querySelector('#register-form');
+    const registerErrorDiv = document.getElementById('register-error');
+
+    if (!registerForm) {
+        console.error('No se encontró el formulario de login');
+        return;
+    }
+
+    registerForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        // Obtener valores
+        const user = document.getElementById('Newuser').value.trim();
+        const password = document.getElementById('Newpassword').value.trim();
+
+        // Limpia mensaje de error
+        registerErrorDiv.textContent = '';
+
+        // Validación básica
+        if (!user || !password) {
+            mostrarError('Por favor completa todos los campos.');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user: user,
+                    password: password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                // Si el servidor devuelve error, se muestra el mensaje
+                throw new Error(data.error || 'Error al iniciar sesión.');
+            }
+
+            console.log('Inicio de sesión exitoso:', data);
+            window.location.href = 'tablas.html';
+
+        } catch (error) {
+            console.error('Error al iniciar sesión:', error);
+            mostrarError(error.message);
+        }
     });
 
     function mostrarError(mensaje) {
-        errorMessageDiv.textContent = mensaje;
+    registerErrorDiv.textContent = mensaje;
+    registerErrorDiv.style.color = 'black';
     }
+
 });

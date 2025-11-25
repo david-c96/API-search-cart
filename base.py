@@ -4,17 +4,17 @@ import mysql.connector
 from mysql.connector import Error
 # base
 
-
+# bcrypt de la contraseña
 def hash_password(password: str) -> str:
-    """Hashea la contraseña usando bcrypt."""
     salt = bcrypt.gensalt()
     passwords = bcrypt.hashpw(password.encode('utf-8'), salt)
     return passwords.decode('utf-8')
 
+# Verifica la contraseña
 def check_password(stored_password: str, provided_password: str) -> bool:
-    """Verifica la contraseña proporcionada contra el hash almacenado."""
     return bcrypt.checkpw(provided_password.encode('utf-8'), stored_password.encode('utf-8'))
 
+# Configuración de la conexión a la base de datos
 config = {
     "host": "127.0.0.1",
     "port": "3306",
@@ -23,10 +23,8 @@ config = {
     "password": "tiger9605"
     }
 
-
+# Almacena un nuevo usuario en la base de datos
 def store_user(usre: str, passwords: str, ):
-    """Almacena un nuevo usuario con su contraseña hasheada en la base de datos."""
-    
     try:
         connection = mysql.connector.connect(**config)
         cursor = connection.cursor()
@@ -40,9 +38,8 @@ def store_user(usre: str, passwords: str, ):
             connection.close()
 
 
-
+# Recupera el hash de la contraseña para un usuario dado
 def retrieve_user(usre: str) -> str:
-    """Recupera el hash de la contraseña para un usuario dado."""
     try:
         connection = mysql.connector.connect(**config)
         cursor = connection.cursor()
@@ -58,9 +55,8 @@ def retrieve_user(usre: str) -> str:
 
 
 
-
+# insertar datos en la base de datos
 def insert( model, part, serial, car, year, color, version):
-
         try:
             connection = mysql.connector.connect(**config)
             cursor = connection.cursor()
@@ -72,9 +68,8 @@ def insert( model, part, serial, car, year, color, version):
                 cursor.close()
                 connection.close()
 
-
+# buscar datos en la base de datos
 def search(model):
-
         connection = mysql.connector.connect(**config)
         cursor = connection.cursor()
         query = f"SELECT * FROM data_ursers.part WHERE model IN ('{model}')"
@@ -82,6 +77,7 @@ def search(model):
         result = cursor.fetchall()
         return result
 
+# búsqueda general en la base de datos
 def general_search(general_search):
     connection = mysql.connector.connect(**config)
     cursor = connection.cursor(dictionary=True)
@@ -99,7 +95,7 @@ def general_search(general_search):
     results = cursor.fetchall()
     return results
 
-
+# eliminar datos en la base de datos
 def eliminate(eliminates):
     try:
         connection = mysql.connector.connect(**config)

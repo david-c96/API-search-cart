@@ -9,14 +9,16 @@
 <body>
     <div class="container">
         <h1>Required field</h1>
-        <form action="/login" method="post">
+        <form id="New" >
             <label for="name-new">Name</label>
-            <input type="text" id="user" required>
+            <input type="text" id="Newuser" required>
 
             <label for="password-new">password</label>
-            <input type="password" id="password" required>
+            <input type="password" id="Newpassword" required>
 
             <button type="submit">sign</button>
+            <div id="error-mensaje" class="error"></div>
+            
         </form>
     </div>
 </body>
