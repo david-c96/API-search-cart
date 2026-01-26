@@ -85,12 +85,12 @@ def general_search(general_search):
     values = []
     for key, value in general_search.items():
             if key in ["Model", "Part", "Serial", "Car", "Year", "Color", "Version"]:
-                conditions.append(f"{key} = %s")
-                values.append(value)
+                conditions.append(f"{key} LIKE %s")
+                values.append(f"%{value}%")
     if not conditions:
             return []  
 
-    sql = f"SELECT * FROM `data_ursers`.`part` WHERE {' AND '.join(conditions)}"
+    sql = f"SELECT * FROM `data_ursers`.`part` WHERE {' OR '.join(conditions)}"
     cursor.execute(sql, values)
     results = cursor.fetchall()
     return results

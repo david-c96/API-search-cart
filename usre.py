@@ -1,5 +1,5 @@
 from base import retrieve_user, check_password
-from base import hash_password, store_user
+from base import hash_password, store_user, general_search
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from mysql.connector import Error
@@ -67,6 +67,17 @@ def New():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
+@app.route("/search", methods=["POST"])
+def buscar():
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "Debes enviar un JSON."}), 400
+
+    result = general_search(data)
+
+    return jsonify(result), 200
 
 if __name__ == "__main__":
     app.run(debug=True)

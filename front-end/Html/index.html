@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script src="../js/script.js"></script>
+</head>
+<body>
+
+<header>
+    <h1>Autopartes Pro</h1>
+    <nav>
+        <a href="#" onclick="showSection('inicio')">Inicio</a>
+        <a href="#" onclick="showSection('login')">Iniciar Sesión</a>
+        <a href="#" onclick="showSection('usuarios')">Creación de Usuarios</a>
+        <a href="#" onclick="showSection('inventario')">Inventario</a>
+        <a href="#" onclick="showSection('verificacion')">Verificación de Piezas</a>
+    </nav>
+</header>
+
+<div class="container">
+
+    <section id="inicio" class="active">
+        <h2>Inicio</h2>
+        <p>Explora algunas autopartes destacadas disponibles en el sistema. Desde aquí puedes acceder rápidamente a los módulos principales.</p>
+
+        <div class="cards">
+            <div class="card">
+                <h3>Freno de Disco</h3>
+                <p>Vehículo: Toyota Corolla</p>
+                <p>Año: 2020</p>
+                <p>Estado: Disponible</p>
+            </div>
+            <div class="card">
+                <h3>Batería 12V</h3>
+                <p>Vehículo: Chevrolet Spark</p>
+                <p>Año: 2019</p>
+                <p>Estado: Disponible</p>
+            </div>
+            <div class="card">
+                <h3>Filtro de Aire</h3>
+                <p>Vehículo: Mazda 3</p>
+                <p>Año: 2021</p>
+                <p>Estado: Disponible</p>
+            </div>
+        </div>
+
+        <h2 style="margin-top:40px;">📰 Noticias Destacadas del Sector Automotriz</h2>
+        <div class="cards">
+            <div class="card">
+                <h3>Vehículos eléctricos en aumento</h3>
+                <p>La demanda de autos eléctricos sigue creciendo en Latinoamérica, impulsando nuevas autopartes especializadas.</p>
+                <p><strong>Fecha:</strong> Hoy</p>
+            </div>
+            <div class="card">
+                <h3>Nuevas normas de seguridad</h3>
+                <p>Fabricantes implementan estándares más estrictos en frenos y sistemas de asistencia.</p>
+                <p><strong>Fecha:</strong> Hoy</p>
+            </div>
+            <div class="card">
+                <h3>Tecnología en autopartes</h3>
+                <p>Sensores inteligentes y piezas conectadas revolucionan el mantenimiento vehicular.</p>
+                <p><strong>Fecha:</strong> Hoy</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="login">
+        <p><strong>Sección:</strong> Acceso al sistema para usuarios registrados.</p>
+        <h2>Inicio de Sesión</h2>
+        <form id="login-form">
+            <input type="text" id="user" placeholder="Usuario">
+            <input type="password" id="password" placeholder="Contraseña">
+            <button type="submit">Ingresar</button>
+        </form>
+        <div id="login-error"></div>
+    </section>
+
+    <section id="usuarios">
+        <p><strong>Sección:</strong> Administración y creación de usuarios del sistema.</p>
+        <h2>Creación de Usuarios</h2>
+        <form id="register-form">
+            <input type="text" id="Newuser" placeholder="Nuevo usuario">
+            <input type="password" id="Newpassword" placeholder="Nueva contraseña">
+            <button type="submit">Registrar</button>
+        </form>
+        <div id="register-error"></div>
+</section>
+
+    <section id="inventario">
+        <p><strong>Sección:</strong> Registro y control del inventario de autopartes.</p>
+        <h2>Inventario de Autopartes</h2>
+        <input type="text" placeholder="Modelo de la pieza">
+        <input type="text" placeholder="Nombre de la parte">
+        <input type="text" placeholder="Serial único">
+        <input type="text" placeholder="Marca / Modelo del carro">
+        <input type="number" placeholder="Año del vehículo">
+        <input type="text" placeholder="Color">
+        <input type="text" placeholder="Versión">
+        <input type="number" placeholder="Cantidad disponible">
+        <button>Registrar Autoparte</button>
+    </section>
+
+    <section id="verificacion">
+        <p><strong>Sección:</strong> Validación de autenticidad y disponibilidad de piezas.</p>
+        <h2>Verificación de Piezas</h2>
+        <input type="text" id="searchBox" onkeyup="searchData()" placeholder="Buscar pieza">
+        <button>Verificar</button>
+        <p>Este módulo permite validar si una autoparte se encuentra registrada en el sistema.</p>
+    </section>
+
+</div>
+
+<script>
+    function showSection(sectionId) {
+        const sections = document.querySelectorAll('section');
+        sections.forEach(section => section.classList.remove('active'));
+        document.getElementById(sectionId).classList.add('active');
+    }
+</script>
+
+</body>
+</html>
