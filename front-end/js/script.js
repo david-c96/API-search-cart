@@ -1,10 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-
-
 // inicio de sesión -------------------------------------
-
-
 
     const loginForm = document.querySelector('#login-form');
     const loginMessageDiv = document.getElementById('login-error');
@@ -50,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             console.log('Inicio de sesión exitoso:', data);
-            window.location.href = 'tablas.html';
+            showSection('inicio');
 
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
@@ -126,3 +122,68 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+// -------nuevo verificacion de datos y búsqueda en tabla ---------
+document.addEventListener("DOMContentLoaded", () => {
+    loadData(); // cargar todo
+});
+
+// Esta función se ejecuta cuando el usuario escribe en el buscador
+function searchData() {
+    let searchValue = document.getElementById("searchBox").value;
+
+    // Si está vacío, limpia la tabla
+    if (searchValue.trim() === "") {
+        document.getElementById("data-body").innerHTML = "";
+        return;
+    }
+
+    fetch("http://127.0.0.1:5000/search", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name: searchValue })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("Datos recibidos:", data);
+        loadTable(data);
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
+}
+
+
+// Pinta los datos dentro de la tabla
+function loadTable(data) {
+    const tableBody = document.getElementById("data-body");
+    tableBody.innerHTML = ""; // limpiar antes de rellenar
+
+    if (!data || data.length === 0) {
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="7" style="text-align:center;">No se encontraron resultados</td>
+            </tr>
+        `;
+        return;
+    }
+
+    data.forEach(item => {
+        let row = `
+            <tr>
+                <td>${item.model || ""}</td>
+                <td>${item.part || ""}</td>
+                <td>${item.serial || ""}</td>
+                <td>${item.car || ""}</td>
+                <td>${item.year || ""}</td>
+                <td>${item.color || ""}</td>
+                <td>${item.version || ""}</td>
+            </tr>
+        `;
+
+        tableBody.innerHTML += row;
+    });
+}
+
